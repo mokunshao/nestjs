@@ -1,15 +1,20 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters } from '@nestjs/common';
 import { CreatePostDto } from './createPostDto';
 import { DemoService } from './providers/demo/demo.service';
+import { DemoFilter } from 'src/core/filters/demo.filter';
 
 @Controller('posts')
+// @UseFilters(DemoFilter)
 export class PostsController {
   constructor(private readonly demoService: DemoService) {
   }
 
   @Get()
+  // @UseFilters(DemoFilter)
   index() {
-    return this.demoService.findAll();
+    // return this.demoService.findAll();
+    // throw new HttpException('没有权限！', HttpStatus.FORBIDDEN)
+    throw new ForbiddenException('没有权限')
   }
 
   @Get(':id')
