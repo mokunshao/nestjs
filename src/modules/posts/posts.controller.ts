@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters, UsePipes, ValidationPipe, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpException, HttpStatus, ForbiddenException, UseFilters, UsePipes, ValidationPipe, ParseIntPipe, UseGuards, SetMetadata } from '@nestjs/common';
 import { CreatePostDto } from './createPostDto';
 import { DemoService } from './providers/demo/demo.service';
 import { DemoFilter } from 'src/core/filters/demo.filter';
@@ -28,6 +28,7 @@ export class PostsController {
 
   @Post()
   @UsePipes(ValidationPipe)
+  @SetMetadata('roles', ['member'])
   store(@Body() post: CreatePostDto) {
     this.demoService.create(post);
   }
