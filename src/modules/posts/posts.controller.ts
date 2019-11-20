@@ -3,6 +3,7 @@ import { CreatePostDto } from './createPostDto';
 import { DemoService } from './providers/demo/demo.service';
 import { DemoFilter } from 'src/core/filters/demo.filter';
 import { DemoAuthGuard } from 'src/core/guards/demo-auth.guard';
+import { Roles } from 'src/core/decorators/roles.decorator';
 
 @Controller('posts')
 // @UseFilters(DemoFilter)
@@ -28,7 +29,8 @@ export class PostsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  @SetMetadata('roles', ['member'])
+  // @SetMetadata('roles', ['member'])
+  @Roles('member')
   store(@Body() post: CreatePostDto) {
     this.demoService.create(post);
   }
