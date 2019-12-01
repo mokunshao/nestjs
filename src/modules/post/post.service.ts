@@ -8,4 +8,9 @@ export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
   ) { }
+  async store(data) {
+    const entity = await this.postRepository.create(data);
+    await this.postRepository.save(entity);
+    return entity;
+  }
 }
