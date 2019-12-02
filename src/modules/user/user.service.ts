@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { UserDto } from './user.dto';
+import { UpdatePasswordDto } from './user.updatePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -28,5 +29,19 @@ export class UserService {
       throw new NotFoundException('没有找到用户');
     }
     return entity;
+  }
+
+  async updatePassword(id: string, data: UpdatePasswordDto) {
+    const { password, newPassword } = data;
+    const entity = await this.userRepository.findOne(id);
+    if (!entity) {
+      throw new NotFoundException('没有找到用户');
+    }
+    const pass = await entity.comparePassword(password);
+    if (!pass) {
+      throw new BadRequestException('密码验证失败，请输入正确的密码');
+    }
+    entity.password = newPassword;
+    return await this.userRepository.save(entity);
   }
 }
