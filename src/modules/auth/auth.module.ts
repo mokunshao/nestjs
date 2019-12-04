@@ -4,14 +4,14 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { secretOrPrivateKey } from './secretOrPrivateKey';
+import { secret } from './secret';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     UserModule,
     JwtModule.register({
-      secretOrPrivateKey,
+      secret,
       signOptions: {
         expiresIn: '12h',
       },
