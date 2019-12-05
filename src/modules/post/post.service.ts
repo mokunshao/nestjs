@@ -49,4 +49,8 @@ export class PostService {
   async unVote(id: number, user: User) {
     await this.postRepository.createQueryBuilder().relation(User, 'voted').of(user).remove(id);
   }
+
+  async liked(id: number) {
+    return await this.postRepository.createQueryBuilder().relation(Post, 'liked').of(id).loadMany();
+  }
 }
