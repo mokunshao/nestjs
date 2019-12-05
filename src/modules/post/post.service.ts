@@ -4,6 +4,7 @@ import { Post } from './post.entity';
 import { Repository } from 'typeorm';
 import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
+import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
 
 @Injectable()
 export class PostService {
@@ -20,19 +21,16 @@ export class PostService {
     return entity;
   }
 
-  async index(categories: string) {
+  async index(options: ListOptionsInterface) {
+    const { categories } = options;
     const q = await this.postRepository.createQueryBuilder('post');
     q.leftJoinAndSelect('post.user', 'user');
     q.leftJoinAndSelect('post.category', 'category');
     if (categories) {
-      q.where('category.alias = :categories', { categories });
+      q.where('category.alias IN (:...categories)', { categories });
     }
     const entities = q.getMany();
     return entities;
-    // const entities = await this.postRepository.find({
-    //   relations: ['user', 'category'],
-    // });
-    // return entities;
   }
 
   async show(id: string) {
