@@ -17,7 +17,9 @@ export class PostService {
   }
 
   async index() {
-    const entities = await this.postRepository.find();
+    const entities = await this.postRepository.find({
+      relations: ['user'],
+    });
     return entities;
   }
 
