@@ -1,6 +1,6 @@
 import {
   Controller, Post, Body, Get, Param, Put, Delete, UseGuards,
-  UseInterceptors, ClassSerializerInterceptor, ParseIntPipe,
+  UseInterceptors, ClassSerializerInterceptor, ParseIntPipe, Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
@@ -22,8 +22,10 @@ export class PostController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  async index() {
-    return await this.postService.index();
+  async index(
+    @Query('categories') categories: string,
+  ) {
+    return await this.postService.index(categories);
   }
 
   @Get(':id')
