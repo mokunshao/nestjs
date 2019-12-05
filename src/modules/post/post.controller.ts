@@ -1,4 +1,7 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller, Post, Body, Get, Param, Put, Delete, UseGuards,
+  UseInterceptors, ClassSerializerInterceptor, ParseIntPipe,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { PostDto } from './post.dto';
 import { AuthGuard } from '@nestjs/passport';
