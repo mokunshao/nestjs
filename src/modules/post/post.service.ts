@@ -45,4 +45,8 @@ export class PostService {
   async vote(id: number, user: User) {
     await this.postRepository.createQueryBuilder().relation(User, 'voted').of(user).add(id);
   }
+
+  async unVote(id: number, user: User) {
+    await this.postRepository.createQueryBuilder().relation(User, 'voted').of(user).remove(id);
+  }
 }
