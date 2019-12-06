@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, UseInterceptors, ClassSerializerInterceptor, Param, ParseIntPipe, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, UseInterceptors, ClassSerializerInterceptor, Param, ParseIntPipe, Body, Put, Delete } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CommentDto } from './comment.dto';
@@ -19,6 +19,21 @@ export class CommentController {
     @Body() data: CommentDto,
     @User() user: UserEntity,
   ) {
-    return this.commentService.storePostComment(id, user, data);
+    return await this.commentService.storePostComment(id, user, data);
+  }
+
+  @Put('comments/:id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: CommentDto,
+  ) {
+    return await this.commentService.update(id, data);
+  }
+
+  @Delete('comments/:id')
+  async destroy(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return await this.commentService.destroy(id);
   }
 }
