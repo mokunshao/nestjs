@@ -14,11 +14,4 @@ export class AuthController {
   async login(@Body() data: LoginDto) {
     return await this.authService.login(data);
   }
-
-  @Get('test')
-  @UseGuards(AuthGuard())
-  async test(@User() user) {
-    console.log('user: ' + user);
-    return { message: 'ok' };
-  }
 }
