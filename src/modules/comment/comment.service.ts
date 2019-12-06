@@ -13,7 +13,7 @@ export class CommentService {
   ) { }
 
   async storePostComment(id: number, user: User, data: CommentDto) {
-    return this.commentRepository.save({
+    return await this.commentRepository.save({
       user,
       ...data,
       post: { id },
