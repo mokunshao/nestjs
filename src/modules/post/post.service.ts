@@ -52,12 +52,16 @@ export class PostService {
   }
 
   async index(options: ListOptionsInterface) {
-    const { categories } = options;
+    const { categories, tags } = options;
     const q = await this.postRepository.createQueryBuilder('post');
     q.leftJoinAndSelect('post.user', 'user');
     q.leftJoinAndSelect('post.category', 'category');
+    q.leftJoinAndSelect('post.tags', 'tag');
     if (categories) {
       q.where('category.alias IN (:...categories)', { categories });
+    }
+    if (tags) {
+      q.andWhere('tag.name IN (:...tags)', { tags });
     }
     const entities = q.getMany();
     return entities;
