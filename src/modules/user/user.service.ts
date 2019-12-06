@@ -47,8 +47,14 @@ export class UserService {
     return await this.userRepository.save(entity);
   }
 
-  async findByName(name: string) {
-    return await this.userRepository.findOne({ name });
+  async findByName(name: string, showPassword?: boolean) {
+    const q = await this.userRepository.createQueryBuilder('user');
+    q.where('user.name=:name', { name });
+    if (showPassword) {
+      q.addSelect('user.password');
+    }
+    const entity = await q.getOne();
+    return entity;
   }
 
   async liked(id: number) {
