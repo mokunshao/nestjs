@@ -26,7 +26,6 @@ export class PostController {
   @UseInterceptors(ClassSerializerInterceptor)
   async index(
     @ListOptions() options: ListOptionsInterface,
-    // @Query('categories') categories: string,
   ) {
     return await this.postService.index(options);
   }

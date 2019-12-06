@@ -5,14 +5,44 @@ import { Repository } from 'typeorm';
 import { PostDto } from './post.dto';
 import { User } from '../user/user.entity';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
+import { Tag } from '../tag/tag.entity';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
+    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
   ) { }
 
+  async beforeTag(tags: Array<Partial<Tag>>) {
+    const ts = tags.map(async item => {
+      const { id, name } = item;
+      if (id) {
+        const t = await this.tagRepository.findOne(id);
+        if (t) {
+          return t;
+        }
+        return;
+      }
+
+      if (name) {
+        const t = await this.tagRepository.findOne({ name });
+        if (t) {
+          return t;
+        }
+        return await this.tagRepository.save(item);
+      }
+    });
+
+    return Promise.all(ts);
+  }
+
   async store(data: PostDto, user: User) {
+    const { tags } = data;
+    if (tags) {
+      data.tags = await this.beforeTag(tags);
+    }
+
     const entity = await this.postRepository.create(data);
     await this.postRepository.save({
       ...entity,
