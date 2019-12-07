@@ -52,6 +52,7 @@ export class UserService {
     if (showPassword) {
       q.addSelect('user.password');
     }
+    q.leftJoinAndSelect('user.roles', 'roles');
     const entity = await q.getOne();
     return entity;
   }
