@@ -64,7 +64,7 @@ export class PostService {
       q.andWhere('tag.name IN (:...tags)', { tags });
     }
     q.take(limit).skip(limit * (page - 1));
-    const entities = await q.getMany();
+    const entities = await q.getManyAndCount();
     return entities;
   }
 
