@@ -9,6 +9,7 @@ import { User as UserEntity } from '../user/user.entity';
 import { User } from 'src/core/decorators/user.decorator';
 import { ListOptions } from 'src/core/decorators/list-options.decorator';
 import { ListOptionsInterface } from 'src/core/interfaces/list-options.interface';
+import { TransformInterceptor } from 'src/core/interceptors/transform.interceptor';
 
 @Controller('posts')
 export class PostController {
@@ -23,7 +24,10 @@ export class PostController {
   }
 
   @Get()
-  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(
+    ClassSerializerInterceptor,
+    TransformInterceptor,
+  )
   async index(
     @ListOptions() options: ListOptionsInterface,
   ) {
