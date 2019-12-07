@@ -52,8 +52,8 @@ export class PostService {
   }
 
   async index(options: ListOptionsInterface) {
-    const { categories, tags } = options;
-    const q = await this.postRepository.createQueryBuilder('post');
+    const { categories, tags, page, limit } = options;
+    const q = this.postRepository.createQueryBuilder('post');
     q.leftJoinAndSelect('post.user', 'user');
     q.leftJoinAndSelect('post.category', 'category');
     q.leftJoinAndSelect('post.tags', 'tag');
@@ -63,7 +63,8 @@ export class PostService {
     if (tags) {
       q.andWhere('tag.name IN (:...tags)', { tags });
     }
-    const entities = q.getMany();
+    q.take(limit).skip(limit * (page - 1));
+    const entities = await q.getMany();
     return entities;
   }
 
