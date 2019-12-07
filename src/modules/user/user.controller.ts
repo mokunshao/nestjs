@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { UpdatePasswordDto } from './user.updatePassword.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { AccessGuard } from 'src/core/guards/access.guard';
 
 @Controller('users')
 export class UserController {
@@ -36,7 +37,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), AccessGuard)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UserDto,
