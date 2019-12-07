@@ -18,9 +18,8 @@ export class UserService {
     if (user) {
       throw new BadRequestException('用户已经存在了');
     }
-    const entity = await this.userRepository.create(data);
-    await this.userRepository.save(entity);
-    return entity;
+    const entity = this.userRepository.create(data);
+    return await this.userRepository.save(entity);
   }
 
   async show(id: string) {
@@ -48,7 +47,7 @@ export class UserService {
   }
 
   async findByName(name: string, showPassword?: boolean) {
-    const q = await this.userRepository.createQueryBuilder('user');
+    const q = this.userRepository.createQueryBuilder('user');
     q.where('user.name=:name', { name });
     if (showPassword) {
       q.addSelect('user.password');
