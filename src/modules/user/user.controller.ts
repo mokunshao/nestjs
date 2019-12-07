@@ -33,4 +33,12 @@ export class UserController {
   ) {
     return this.userServie.liked(id);
   }
+
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UserDto,
+  ) {
+    return this.userServie.update(id, data);
+  }
 }

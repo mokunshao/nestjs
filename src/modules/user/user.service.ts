@@ -60,4 +60,16 @@ export class UserService {
   async liked(id: number) {
     return await this.userRepository.findOne(id, { relations: ['voted', 'voted.user'] });
   }
+
+  async update(id: number, data: UserDto) {
+    const { roles } = data;
+
+    const entity = await this.userRepository.findOne(id);
+
+    if (entity) {
+      entity.roles = roles;
+    }
+
+    return await this.userRepository.save(entity);
+  }
 }
