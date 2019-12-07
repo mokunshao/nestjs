@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Param, UseInterceptors, ClassSerializerInterceptor, Put, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseInterceptors, ClassSerializerInterceptor, Put, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { UpdatePasswordDto } from './user.updatePassword.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
@@ -35,6 +36,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard())
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UserDto,
