@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, BadRequestException } from '@nestjs/common';
 import { FileController } from './file.controller';
 import { FileService } from './file.service';
 import { MulterModule } from '@nestjs/platform-express';
@@ -7,6 +7,15 @@ import { MulterModule } from '@nestjs/platform-express';
   imports: [
     MulterModule.register({
       dest: './uploads',
+      fileFilter: (req, file, callback) => {
+        const mimetypes = ['image/png', 'image/jpeg'];
+        const allowed = mimetypes.some(type => type === file.mimetype);
+        if (allowed) {
+          callback(null, true);
+        } else {
+          callback(new BadRequestException('不支持上传此类型文件'), false);
+        }
+      },
     }),
   ],
   controllers: [FileController],
