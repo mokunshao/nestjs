@@ -10,7 +10,12 @@ export class FileService {
     @InjectRepository(File)
     private readonly fileRepository: Repository<File>,
   ) { }
+
   async store(data: FileDto) {
     return await this.fileRepository.save(data);
+  }
+
+  async show(id: number) {
+    return await this.fileRepository.findOne(id);
   }
 }
