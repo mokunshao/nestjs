@@ -6,10 +6,10 @@ export class File {
   id: number;
 
   @Column()
-  originalName: string;
+  originalname: string;
 
   @Column()
-  fileName: string;
+  filename: string;
 
   @Column()
   mimetype: string;
